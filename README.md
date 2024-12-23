@@ -1,4 +1,4 @@
-# cs699-project-audience-poll
+# CS699 Project: Audience Poll
 # Audience Poll - Empowering Informed Decisions Through Collective Knowledge
 
 Audience Poll is a web-based platform that allows users to create polls on conflicting topics and receive votes from other users based on their knowledge or experience. The system aggregates the results in real-time to help users make better, more informed decisions.<br><br>
