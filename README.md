@@ -1,4 +1,9 @@
 # CS699 Project: Audience Poll
+Project By:
+1) Parv Gakhar <br>
+2) Vansil Chauhan<br>
+3) Shalaka thorat
+
 # Audience Poll - Empowering Informed Decisions Through Collective Knowledge
 
 Audience Poll is a web-based platform that allows users to create polls on conflicting topics and receive votes from other users based on their knowledge or experience. The system aggregates the results in real-time to help users make better, more informed decisions.<br><br>
