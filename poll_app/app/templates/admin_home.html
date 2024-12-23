@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block body %}
+<link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}" type="text/css"/>
+
+<ul>
+    <li><a id="home" href="{{ url_for('home') }}">Home</a></li>
+    <li><a id="users" href="{{ url_for('admin_users') }}">Users</a></li>
+    <li><a id="polls" href="{{ url_for('admin_polls') }}">Polls</a></li>
+    <li><a id="reports" href="{{ url_for('admin_reported_polls')}}"> Reported Polls</a></li>
+    <li style="cursor: pointer; float: right; margin-right: -3px;" class="user">
+        <img width="50" height="52" onclick="toggleSidebar()" style="float:right" src="{{ url_for('static', filename='user.jpg')}}">
+    </li>
+</ul>
+
+<div id="sidebar" class="sidebar">
+    <a href="javascript:void(0)" class="close-btn" onclick="toggleSidebar()">&times;</a>
+    <a href="{{url_for('my_polls')}}">My Polls</a>
+    <a href="{{url_for('my_votes')}}">My Voting History</a>
+    <a href="{{ url_for('create_poll') }}">Create New Poll</a>
+    {% if user.is_admin %}
+    <a href="{{ url_for('admin_users') }}">Admin Panel</a>
+    {% endif %}
+    <a href="{{url_for('logout')}}">Log Out</a>
+    <hr>
+</div>
+<script>
+    const pollsTab = document.getElementById("polls");
+    const usersTab = document.getElementById("users");
+    const reportsTab = document.getElementById("reports");
+    const page = "{{ page }}";
+
+    if (page === "polls") {
+        pollsTab.classList.add("active");
+    }
+    else if (page === "users") {
+        usersTab.classList.add("active");
+    }
+    else if (page === "reports"){
+        reportsTab.classList.add("active")
+    }
+
+    function toggleSidebar() {
+        const sidebar = document.getElementById("sidebar");
+        sidebar.style.width = sidebar.style.width === "250px" ? "0" : "250px";
+    }
+</script>
+
+<br>
+<div class="wrapper">
+    <h4 class="welcome">Welcome <i class="username">{{user.email}}</i></h4><br>
+    <div style="margin-left: 5.2rem;">
+    <form>
+        <input type="search-poll" name="q" placeholder="Search...">
+        <button type="search-submit" class="btn search-button">Search</button>
+    </form>
+    </div>
+        {% block wrapper %}
+        {% endblock %}
+</div>
+{% endblock %}

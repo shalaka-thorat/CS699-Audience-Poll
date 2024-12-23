@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block body %}
+<link rel="stylesheet" href="{{ url_for('static', filename='poll.css') }}" type="text/css"/>
+
+<div class="wrapper">
+    <header>
+        <a style="margin-left:-25px;" href="{{ url_for('home') }}" class="button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-bar-left" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M12.5 15a.5.5 0 0 1-.5-.5v-13a.5.5 0 0 1 1 0v13a.5.5 0 0 1-.5.5M10 8a.5.5 0 0 1-.5.5H3.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L3.707 7.5H9.5a.5.5 0 0 1 .5.5"/>
+              </svg>
+              &ensp;Home</a>
+    </header>
+    <br>
+    <h2 style="text-align:center;cursor: default;">Create a New Poll</h2>
+    <p style="text-align:center;cursor: default; color:red;">* You can Add Minimum 2 & Maximum 16 Options for a MCQ Poll</p>
+    <form action="{{ url_for('create_poll') }}" method="POST">
+    <table class="poll-table">
+        <tr>
+            <td><label for="title" class="poll-labels">Poll Question: </label></td>
+            <td><input type="text" id="title" name="title" required placeholder="Poll Question"></td>
+        </tr>
+            <td><label for="description" class="poll-labels">Poll Description: </label></td>            
+            <td><textarea rows="4" cols="24" id="description" name="description" placeholder="Poll Description"></textarea></td>
+            <tr>
+                <td><label for="options" class="poll-labels">Options: </label></td>
+                <td>
+                    <div style="display:inline;" id="options">
+                        <input type="text" name="option1" class="optionStyle" placeholder="Option 1" required>
+                        <input type="text" name="option2" class="optionStyle" placeholder="Option 2" required>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <br>
+            <div>
+                <button type="button" class="btn btn-info add-remove-button" id="add-option-btn" onclick="addOption()">Add Option</button>
+            <button type="button" class="btn btn-info add-remove-button" id="remove-option-btn" onclick="removeOption()" disabled>Remove Last Option</button>
+            </div>
+
+    <div class="button-div">
+        <button type="submit" onclick="return confirm('Are you sure you want to Submit?')" class="button btn btn-info">Create Poll</button>
+    </div>
+  </form>
+</div>
+{% endblock %}
+{% block script %}
+<script>
+    let optionCount = 2; 
+    const maxOptions = 16;
+
+    function addOption() {
+        if (optionCount < maxOptions){
+
+            optionCount++;  
+            const optionsContainer = document.getElementById("options");
+            const newOption = document.createElement("input");
+            newOption.type = "text";
+            newOption.name = `option${optionCount}`;
+            newOption.placeholder = `Option ${optionCount}`;
+            newOption.required = true;
+            newOption.classList.add("newOptionStyle");
+            optionsContainer.appendChild(newOption);
+
+            if (optionCount > 2) {
+                document.getElementById("remove-option-btn").disabled = false;
+            }
+            if (optionCount === maxOptions){
+                document.getElementById("add-option-btn").disabled = true;
+            }
+        }
+    }
+
+    function removeOption() {
+        if (optionCount > 2) {
+            const optionsContainer = document.getElementById("options");
+            
+            optionsContainer.removeChild(optionsContainer.lastElementChild);
+            optionCount--;
+
+            if (optionCount === 2) {
+                document.getElementById("remove-option-btn").disabled = true;
+            }
+
+            if (optionCount < maxOptions) {
+                document.getElementById("add-option-btn").disabled = false;
+            }
+        }
+    }
+</script>
+{% endblock %}

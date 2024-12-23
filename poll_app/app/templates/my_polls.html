@@ -1,0 +1,41 @@
+{% extends 'home.html' %}
+{% block wrapper %}
+<div class="m-5">
+    <table class="table">
+        <tr>
+            <th scope="col"> Poll Name </th>
+            <th scope="col"> Votes </th>
+            <th scope="col"> Author </th>
+            <th scope="col"> Created Date </th>
+            <th scope="col"> Delete </th>
+            <th scope="col"> Share </th>
+            <th scope="col"> Analyse </th>
+        </tr>
+        {% for poll in polls %}
+        <tr>
+            <td class='col-sm-5'><a href="{{ url_for('poll', poll_id=poll.id) }}">{{ poll.title }}</a></td>
+            <td class='col-sm-1'>{{ poll.vote_count}}</td>
+            <td class='col-sm-1'>{{ poll.creator_username}} </td>
+            <td class='col-sm-3'>{{ poll.created_at.strftime('%B %d, %Y %I:%M %p')}} </td>
+            <td class="col-sm-1"><a class="text-danger" onclick="return confirm('Are you sure you want to Delete this Poll?')" href="{{url_for('delete_poll', poll_id=poll.id)}}">
+                <svg style="margin-left: 10px;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                    <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                    <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                  </svg>
+            </a></td>
+            <td class="col-sm-1"><a href="{{url_for('share_poll', poll_id=poll.id)}}">
+                <svg style="margin-left: 7px;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-share" viewBox="0 0 16 16">
+                    <path d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3M11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.5 2.5 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5m-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3m11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3"/>
+                </svg>
+            </a></td>
+            <td class="col-sm-1"><a href="{{url_for('analyse', poll_id=poll.id)}}">
+                <svg style="margin-left: 7px;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-bar-graph" viewBox="0 0 16 16">
+                    <path d="M4.5 12a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5zm3 0a.5.5 0 0 1-.5-.5v-4a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-.5.5zm3 0a.5.5 0 0 1-.5-.5v-6a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-.5.5z"/>
+                    <path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1"/>
+                </svg>
+            </a></td>
+        </tr>
+        {% endfor %}
+    </table>
+    </div>
+{% endblock %}

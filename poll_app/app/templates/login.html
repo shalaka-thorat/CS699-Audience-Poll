@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block body %}
+<link rel="stylesheet" href="{{ url_for('static', filename='login-signup.css') }}" type="text/css"/>
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+ <script>
+ function togglePassword(){
+ const passwordField = document.getElementById("password");
+const togglePassword = document.querySelector(".password-toggle-icon");
+
+  if (passwordField.type === "password") {
+    passwordField.type = "text";
+    togglePassword.classList.remove("fa-eye-slash");
+    togglePassword.classList.add("fa-eye");
+  } else {
+    passwordField.type = "password";
+    togglePassword.classList.remove("fa-eye");
+    togglePassword.classList.add("fa-eye-slash");
+  }
+}
+</script>
+<div class="wrapper">
+
+  {% block content %}
+    {% for message in get_flashed_messages() %}
+    <div class="alert alert-warning alert-dismissible mt-3" role="alert">
+      <button type="button" class="close" data-bs-dismiss="alert">&times;</button>
+        {{ message }}
+    </div>
+    {% endfor %}
+  {% endblock %}
+
+	<h1 class="title">Login to Audience-Poll</h1>
+    <p class="desc" style="padding-top: 10px;">Create polls, Gather opinions, Make informed decisions with</p>
+	<p class="desc">Collective Input!</p>
+    <form action="{{url_for('login')}}" method="POST">
+      <div class="row">
+        <i class="fas fa-user"></i>
+        <input type="email" id="email" name="email" placeholder="Email ID" required />
+      </div>
+      <div class="row">
+        <i class="fas fa-lock"></i>
+        <input type="password" id="password" name="password" placeholder="Password" required />
+		<i onclick="togglePassword()" style="position: absolute;right: 0.5px;top: 50%;transform: translateY(-50%);cursor: pointer;color: grey;background: none;border: none;"
+		class="pass-eye password-toggle-icon fas fa-eye-slash"></i>
+      </div>
+      <!--<div class="pass"><a href="#">Forgot password?</a></div>-->
+      <div class="row button">
+        <input type="submit" value="Login" />
+      </div>
+      <div class="signup-login-link">Not a member? <a href="{{ url_for('signup') }}">Signup now</a></div>
+    </form>
+  </div>
+{% endblock %}

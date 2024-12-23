@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="share-analysis">
+    <header style="margin-top: 30px; justify-items: left;">
+        <a href="{{ url_for('my_votes') }}" class="button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-bar-left" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M12.5 15a.5.5 0 0 1-.5-.5v-13a.5.5 0 0 1 1 0v13a.5.5 0 0 1-.5.5M10 8a.5.5 0 0 1-.5.5H3.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L3.707 7.5H9.5a.5.5 0 0 1 .5.5"/>
+              </svg>
+              &ensp;Voting History</a>
+        <a href="{{ url_for('home') }}" class="button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
+                <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5z"/>
+            </svg>
+            &ensp;Home</a>
+</header>
+<br>
+<link rel="stylesheet" href="{{ url_for('static', filename='poll.css') }}" type="text/css"/>
+<h2 style="text-align:center;cursor: default;"> {{poll.title}}</h2>
+<p style="text-align:center;cursor: default;">{{ poll.description }}</p>
+<br>
+<div class="poll-area m-5">
+<table class="table">
+    <tr>
+        <th>Option</th>
+        <th>Progress</th>
+        <th>No. of Votes</th>
+        <th>Vote Share</th>
+    </tr>
+    {% for option in poll.options %}
+    <tr>
+        {% if poll.vote_count == 0 %}
+        {% set value = 0 %}
+        {% else%}
+        {% set value = ((option.vote_count * 10000) // poll.vote_count) / 100 %}
+        {% endif%}
+        <td class="col-sm-3">{{option.text}}</td>
+        <td class="col-sm-3"><progress style="accent-color:#50B7CB;" id="{{option.id}}" value="{{ value }}" max=100></progress></td>
+        <td class="col-sm-1">{{option.vote_count}}</td>
+        <td class="col-sm-3">{{value}} %</td>
+    </tr>
+    {% endfor %}
+</table>
+<br>
+<h5 style="text-align: center;cursor: default;">Total Votes: <p class="vote-count">{{poll.vote_count}}</p></h5>
+</div>
+</div>
+{% endblock %}

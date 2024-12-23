@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block body %}
+<link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}" type="text/css"/>
+<nav>
+    <ul>
+        <li><a id="home" href="{{ url_for('home') }}">Home</a></li>
+        <li><a id="poll" href="{{url_for('my_polls')}}">My Polls</a></li>
+        <li><a id="history" href="{{url_for('my_votes')}}">My Voting History</a></li>
+        <li><a href="{{ url_for('create_poll') }}">Create New Poll</a></li>
+        {% if user.is_admin %}
+        <li><a href="{{ url_for('admin_users') }}">Admin Panel</a></li>
+        {% endif %}
+        <li style="cursor: pointer; float: right; margin-right: -3px;" class="user">
+            <img width="50" height="52" onclick="toggleSidebar()" style="float:right" src="{{ url_for('static', filename='user.jpg')}}">
+        </li>
+    </ul>
+    
+    <div id="sidebar" class="sidebar">
+        <a href="javascript:void(0)" class="close-btn" onclick="toggleSidebar()">&times;</a>
+        <a href="{{url_for('my_polls')}}">My Polls</a>
+        <a href="{{url_for('my_votes')}}">My Voting History</a>
+        <a href="{{ url_for('create_poll') }}">Create New Poll</a>
+        {% if user.is_admin %}
+        <a href="{{ url_for('admin_users') }}">Admin Panel</a>
+        {% endif %}
+        <a href="{{url_for('logout')}}">Log Out</a>
+        <hr>
+        {% if not user.is_admin %}
+        <a class="text-danger" onclick="return confirm('Are you sure you want to Delete this Account?')" href="{{url_for('delete_account')}}"> Delete Account </a>
+        {% endif %}
+    </div>
+    <script>
+
+        const homeTab = document.getElementById("home");
+        const pollTab = document.getElementById("poll");
+        const historyTab = document.getElementById("history");
+        const page = "{{ page }}";
+
+        if (page === "history") {
+            historyTab.classList.add("active");
+        }
+        else if (page === "poll") {
+            pollTab.classList.add("active");
+        }
+        else {
+            homeTab.classList.add("active");
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById("sidebar");
+            sidebar.style.width = sidebar.style.width === "250px" ? "0" : "250px";
+        }
+    </script>
+</nav>
+<br>
+<div class="wrapper">
+    <h4 class="welcome">Welcome <i class="username">{{user.email}}</i></h4><br>
+    <div style="margin-left: 50px;">
+    <form>
+        <input type="search-poll" name="q" placeholder="Search...">
+        <button type="search-submit" class="btn search-button">Search</button>
+    </form>
+    </div>
+    {% block wrapper %}
+    {% endblock %}
+</div>
+{% endblock %}

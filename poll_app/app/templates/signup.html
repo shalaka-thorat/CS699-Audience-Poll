@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+{% block body %}
+ <link rel="stylesheet" href="{{ url_for('static', filename='login-signup.css') }}" type="text/css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"/>
+ <script>
+
+ function togglePassword(){
+ const passwordField = document.getElementById("password");
+ const togglePassword = document.querySelector(".password-toggle-icon");
+
+  if (passwordField.type === "password") {
+    passwordField.type = "text";
+    togglePassword.classList.remove("fa-eye-slash");
+    togglePassword.classList.add("fa-eye");
+  } else {
+    passwordField.type = "password";
+    togglePassword.classList.remove("fa-eye");
+    togglePassword.classList.add("fa-eye-slash");
+  }
+}
+
+function checkSubmit(){
+  const length = document.getElementById('length');
+  const upper = document.getElementById('uppercase');
+  const lower = document.getElementById('lowercase');
+  const number = document.getElementById('number');
+  const special = document.getElementById('special');
+
+  const email = document.getElementById('email');
+  const gender = document.getElementById('gender');
+  const age = document.getElementById('age');
+
+  if(length.classList.contains("rulePassed") && upper.classList.contains("rulePassed") && 
+  lower.classList.contains("rulePassed") && number.classList.contains("rulePassed") && 
+  special.classList.contains("rulePassed") && email.classList.contains("emailPass") && 
+  gender.value!="" && age.value!="" && age.value>=12 && age.value<=90){
+      document.getElementById("regForm").submit();
+  }
+  else{
+    alert("Enter Valid Details for Registration");
+    return false;
+  }
+}
+
+function showRules(){
+  document.getElementById('passval').style.visibility="visible";
+ }
+
+ function hideRules(){
+  document.getElementById('passval').style.visibility="hidden";
+ }
+
+ function emailRule(){
+  const email = document.getElementById('email');
+  const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,}$/;
+
+  if(email.value!="" && emailRegex.test(email.value)){
+    email.classList.add("emailPass");
+    email.classList.remove("emailFail");
+  }
+  else{
+    email.classList.add("emailFail");
+    email.classList.remove("emailPass");
+  }
+ }
+
+function passwordRules(){
+  showRules();
+  const password = document.getElementById('password').value;
+  const length = document.getElementById('length');
+  const upper = document.getElementById('uppercase');
+  const lower = document.getElementById('lowercase');
+  const number = document.getElementById('number');
+  const special = document.getElementById('special');
+
+  if(password.length >= 6 && password.length <= 10) {
+    length.classList.add('rulePassed');
+    length.classList.remove('ruleFailed');
+  } else {
+    length.classList.add('ruleFailed');
+    length.classList.remove('rulePassed');
+  }
+
+  if(/[A-Z]/.test(password)) {
+    upper.classList.add('rulePassed');
+    upper.classList.remove('ruleFailed');
+  } else {
+    upper.classList.add('ruleFailed');
+    upper.classList.remove('rulePassed');
+  }
+
+  if(/[a-z]/.test(password)) {
+    lower.classList.add('rulePassed');
+    lower.classList.remove('ruleFailed');
+  } else {
+    lower.classList.add('ruleFailed');
+    lower.classList.remove('rulePassed');
+  }
+
+  if(/\d/.test(password)) {
+    number.classList.add('rulePassed');
+    number.classList.remove('ruleFailed');
+  } else {
+    number.classList.add('ruleFailed');
+    number.classList.remove('rulePassed');
+  }
+
+  if(/[!@#$%^&*]/.test(password)) {
+    special.classList.add('rulePassed');
+    special.classList.remove('ruleFailed');
+  } else {
+    special.classList.add('ruleFailed');
+    special.classList.remove('rulePassed');
+  }
+
+  if(length.classList.contains("rulePassed") && upper.classList.contains("rulePassed") && 
+  lower.classList.contains("rulePassed") && number.classList.contains("rulePassed") && 
+  special.classList.contains("rulePassed")){
+    hideRules();
+  }
+
+}
+
+</script>
+<style>
+  body{
+    overflow-y: scroll;
+  }
+</style>
+<div class="wrapper" style="margin-top: 175px;">
+
+    <h1 class="title">Register to Audience-Poll</h1>
+    <p class="desc" style="padding-top: 10px;">Create polls, Gather opinions, Make informed decisions with</p>
+	  <p class="desc">Collective Input!</p>
+    <form id="regForm" action="{{url_for('signup')}}" method="POST">
+      <div class="row">
+        <i class="fas fa-user"></i>
+        <input type="email" class="email" onfocus="hideRules()" oninput="emailRule()" onchange="emailRule()" id="email" name="email" placeholder="Email ID" required />
+      </div>
+      <div class="row">
+        <i class="fas fa-lock"></i>
+        <input onfocus="showRules()" onblur="hideRules()" oninput="passwordRules()" onchange="passwordRules()" type="password" id="password" name="password" placeholder="Password" required />
+		<i onclick="togglePassword()" style="position: absolute;right: 0.5px;top: 50%;transform: translateY(-50%);cursor: pointer;color: grey;background: none;border: none;"
+		class="pass-eye password-toggle-icon fas fa-eye-slash"></i>
+    <div class="passval" id="passval" style="z-index: 1;">
+      <p id="length" class="rule">✔ Minimum 6, Maximum 10 Characters</p>
+      <p id="uppercase" class="rule">✔ At least 1 Uppercase Letter</p>
+      <p id="lowercase" class="rule">✔ At least 1 Lowercase letter</p>
+      <p id="number" class="rule">✔ At least 1 Number</p>
+      <p id="special" class="rule">✔ At least 1 Special Character (!@#$%^&*)</p>
+    </div>
+  </div>
+  <div class="row">
+    <select style="border-radius: 5px; border-color: #c8c8c8;" name="gender" id="gender" required>
+      <option value="">Select Gender</option>
+      <option value="male">Male</option>
+      <option value="female">Female</option>
+      <option value="other">Other</option>
+    </select>
+  </div>
+  <div class ="row">
+    <label for="age">Age (Years):</label>
+    <input type="number" id="age" name="age" min="12" max="90" required>
+  </div>
+      <!--<div class="pass"><a href="#">Forgot password?</a></div>-->
+      <div class="row button">
+        <input onclick="return checkSubmit()" type="button" value="Register" />
+      </div>
+      <div style="margin-bottom: 20px;" class="signup-login-link">Already a member? <a href="{{ url_for('login') }}">Login now</a></div>
+    </form>
+</div>
+{% endblock %}
